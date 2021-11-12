@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from "react";
-import { Route, Link, Switch } from 'react-router-dom';
+import { Route, Link, Switch, BrowserRouter } from 'react-router-dom';
 import Confirmation from "./Confirmation";
 import Order from "./Order";
-import Homepage from './Homepage';
 import schema from './Form Schema';
 import * as yup from 'yup';
+import Home from "./Home";
 
 const initialFormValues = {
     customerName: '',
@@ -73,34 +73,35 @@ export default function App()
         schema.isValid(formValues).then(valid => setDisabled(!valid));
     }, [formValues]);
 
-
+        
     return (
-        <div className='container'>
-            <nav>
-                <h1 className='pizza-header'>Lambda Eats</h1>
-                <div className='nav-links'>
-                    <Link to="/">Home</Link>
-                    <Link to="/pizza">Order</Link>
-                </div>
-            </nav>
-
-            <Switch>
-                <Route path="/pizza">
-                    <Order
-                        values={formValues}
-                        change={inputChange}
-                        submit={formSubmit}
-                        disabled={disabled}
-                        errors={formErrors}
-                    />
-                </Route>
-                <Route path="/order/confirmation">
-                    <Confirmation details={confirmation} />
-                </Route>
-                <Route path="/">
-                    <Homepage />
-                </Route>
-            </Switch>
-        </div>
-    );
+      <div className='container'>
+          <nav>
+              <h1 className='pizza-header'>Lambda Eats</h1>
+              <div className='nav-links'>
+              </div>
+          </nav>
+        <BrowserRouter>
+          <Switch>
+              <Route path="/pizza">
+                <Link to="https://reqres.in/api/orders">Order</Link>
+                  <Order
+                      values={formValues}
+                      change={inputChange}
+                      submit={formSubmit}
+                      disabled={disabled}
+                      errors={formErrors}
+                  />
+              </Route>
+              <Route path="/pizza/confirmation">
+                  <Confirmation details={confirmation} />
+              </Route>
+              <Route path="/">
+                <Link to="/">Home</Link>
+                  <Home/>
+              </Route>
+          </Switch>
+        </BrowserRouter>
+      </div>
+  );
 }; 
